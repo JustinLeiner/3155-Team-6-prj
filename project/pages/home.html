@@ -5,10 +5,35 @@
     <meta name="description" content="Shark Questions">
     <title>Shark Questions</title>
     <!-- styles -->
-    <link rel="stylesheet" href="">
+    <link href="styles/home.css" rel="stylesheet" type="text/css" >
     <h1>New Sharks Forum</h1>
     </head>
     <body>
-        
+        <div  >
+        <table class="question_list">
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>User</th>
+            </tr>
+            <!--Loop for placing the notes from the database-->
+            <tr>
+                <td><!--Question Title--></td>
+                <td><!--Date--></td>
+                <td><!--User--></td>
+                <td><!--Connect Edit Method/Link-->
+                    <form>
+                        <input type="submit" value="Edit">
+                    </form>
+                </td>
+                <td><!--Connect Delete Method/Link-->
+                    <form>
+                        <input type="submit" value="Delete">
+                    </form>
+                </td>
+            </tr>
+            <!--End of Loop-->
+        </table>
+        </div>
     </body>
 </html>
