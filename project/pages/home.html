@@ -6,22 +6,31 @@
     <title>Shark Questions</title>
     <!-- styles -->
     <link href="styles/home.css" rel="stylesheet" type="text/css" >
-    <h1>New Sharks Forum</h1>
     </head>
+    <header>
+        <h1>New Sharks Forum</h1>
+    </header>
+    <nav>
+        <a href="home.html">Home</a> ||
+        <a href="login.html">Login</a>
+    </nav>
     <body>
-        <div  >
+        <div>
+        <br>
+        <button onclick='window.location.href ="new_question.html"'>New Question</button>
+        <br>
         <table class="question_list">
             <tr>
                 <th>Title</th>
                 <th>Date</th>
                 <th>User</th>
             </tr>
-            <!--Loop for placing the notes from the database-->
+            <!--Loop for placing the questions from the database-->
             <tr>
                 <td><!--Question Title--></td>
                 <td><!--Date--></td>
                 <td><!--User--></td>
-                <td><!--Connect Edit Method/Link-->
+                <td><!--Connect Edit Method/Link, when user clicks on edit it will go to the edit_selected_question.html-->
                     <form>
                         <input type="submit" value="Edit">
                     </form>
