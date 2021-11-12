@@ -37,8 +37,8 @@
                         <input type="submit" value="Edit">
                     </form>
                 </td>
-                <td><!--Connect Delete Method/Link-->
-                    <form>
+                <td>
+                    <form action="{{ url_for('delete_note', note_id=note.id) }}" method="post">
                         <input type="submit" value="Delete">
                     </form>
                 </td>
