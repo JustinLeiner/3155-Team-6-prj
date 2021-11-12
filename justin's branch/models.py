@@ -2,7 +2,7 @@ from database import db
 
 class Note(db.Model):
     id = db.Column("id", db.Integer, primary_key = True)
-    title = db.Column("titile", db.String(200))
+    title = db.Column("title", db.String(200))
     text = db.Column("text", db.String(100))
     date = db.Column("date", db.String(50))
 
