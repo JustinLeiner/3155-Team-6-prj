@@ -35,9 +35,9 @@ def index():
 def get_post(post_id):
     a_user = db.session.query(User).filter_by(email='jleiner1@uncc.edu').one()
 
-    user_posts = db.session.query(Note).filter_by(id=post_id).one()
+    user_post = db.session.query(Note).filter_by(id=post_id).one()
 
-    return render_template('selected_question.html', posts = user_posts, user=a_user)
+    return render_template('selected_question.html', post = user_posts, user=a_user)
 
 # new post template #
 @app.route('/new_question', methods = ['GET', 'POST'])
@@ -65,5 +65,41 @@ def new_post():
         a_user = db.session.query(User).filter_by(email='jleiner1@uncc.edu').one()
         return render_template('new_question.html', user=a_user)
 
+@app.route('/home/edit/<post_id>', methods=['GET', 'POST'])
+def update_post(post_id):
+    #check method used for request
+    if request.method == 'POST':
+        # get title data
+        title = request.form['questiontitle']
+        # get post data
+        text = request.form['newquestion']
+        post = db.session.query(Note).filter_by(id=post_id).one()
+        # update post data
+        post.title = title
+        post.text = text
+        # update post in DB
+        db.session.add(post)
+        db.session.commit()
+
+        return redirect(url_for('index'))
+    else:
+        #GET request - show new post form to edit post
+        #retrieve user from database
+        a_user = db.session.query(User).filter_by(email='jleiner1@uncc.edu').one()
+
+        #retrieve post from database
+        my_post = db.session.query(Note).filter_by(id=post_id).one()
+
+        return render_template('edit_selected_question.html', post=my_post, user=a_user)
+
+@app.route('/home/selected_question/delete/<post_id>', methods=['POST'])
+@app.route('/home/delete/<post_id>', methods=['POST'])
+def delete_post(post_id):
+    #retrieve post from database
+    user_post = db.session.query(Note).filter_by(id=post_id).one()
+    db.session.delete(user_post)
+    db.session.commit()
+
+    return redirect(url_for('index'))
 
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)

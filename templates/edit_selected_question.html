@@ -11,22 +11,20 @@
         <h1>New Sharks Forum</h1>
     </header>
     <nav>
-        <a href="home.html">Home</a> ||
-        <a href="login.html">Login</a>
+        <a href="{{url_for('index')}}">Home</a>
     </nav>
     <body>
-        
+    <form action="{{ url_for('update_post', post_id=post.id) }}" method="post">
         <p>Posted by: <!--User--></p>
-        <p>Date: <!--Date--></p>
-        <p>This is where the text will go, delete me when you have placed the python in.<!--Text--></p>
+        <p>Date: {{post.date}}</p>
 
-        <h2>Question Title:<!--Question Title--></h2>
+        <h2>Question Title:</h2>
         <!--Will need to be connected to the database to get question saved-->
-        <p><input type="text" name="title" value=""/></p> 
+        <p><input type="text" name="title" value="{{post.title}}"/></p> 
         <p>Question:</p>
         <p>
             <!--User's already answered question ready for edit.-->
-            <textarea name="noteText"  rows="6" cols="0" >This will contain the user's saved question that they are editing. Delete this after inserting the python.</textarea>
+            <textarea name="noteText"  rows="6" cols="0">{{post.text}}</textarea>
         </p>        
         <!--Saves the edits and then returns to selected_question.html-->
         <form>
@@ -37,7 +35,7 @@
             <input type="submit" value="Delete">
         </form>
         <!--End of if statement-->
-
+    </form>
         <h3>Replies</h3>
          <!--Loop for placing the notes from the database-->
          <table class="replies_list">
