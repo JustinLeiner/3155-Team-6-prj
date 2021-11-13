@@ -23,6 +23,7 @@ with app.app_context():
 # Home page #
 @app.route('/')
 @app.route('/home', methods = ['GET', 'POST'])
+@app.route('/home/', methods = ['GET', 'POST'])
 def index():
     a_user = db.session.query(User).filter_by(email='jleiner1@uncc.edu').one()
 
@@ -37,7 +38,7 @@ def get_post(post_id):
 
     user_post = db.session.query(Note).filter_by(id=post_id).one()
 
-    return render_template('selected_question.html', post = user_posts, user=a_user)
+    return render_template('selected_question.html', posts = user_post, user=a_user)
 
 # new post template #
 @app.route('/new_question', methods = ['GET', 'POST'])
