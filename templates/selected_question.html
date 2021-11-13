@@ -3,7 +3,7 @@
     <head>
     <meta charset="utf-8">
     <meta name="description" content="Shark Questions">
-    <title>Shark Question</title>
+    <title>Shark Question- {{post.title}}</title>
     <!-- styles -->
     <link href="styles/home.css" rel="stylesheet" type="text/css" >
     </head>
@@ -14,18 +14,18 @@
         <a href="{{url_for('index')}}">Home</a>
     </nav>
     <body>
-        <h2>Question Title: {{posts.title}} </h2>
-        <p>Posted by: <!--User--></p>
-        <p>Date: {{posts.date}}</p>
-        <p>{{posts.text}}</p>
+        <h2>Question Title: {{post.title}} </h2>
+        <p>Posted by: {{user.name}}</p>
+        <p>Date: {{post.date}}</p>
+        <p class="posttext">{{post.text}}</p>
         
         <!--if statement will need to be here to see if the usernames match if they do then the user is allowed to edit the post-->
         <!--Connect Edit Method/Link, this button will go to the "edit_selected_question.html"-->
-        <form>
+        <form action="{{ url_for('update_post', post_id=post.id) }}">
             <input type="submit" value="Edit">
         </form>
         <!--Delete Method, if statement also applies-->
-        <form>
+        <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post">
             <input type="submit" value="Delete">
         </form>
         <!--End of if statement-->

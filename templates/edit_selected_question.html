@@ -3,7 +3,7 @@
     <head>
     <meta charset="utf-8">
     <meta name="description" content="Shark Questions">
-    <title>Shark Questions</title>
+    <title>Shark Question- {{post.title}}</title>
     <!-- styles -->
     <link href="styles/home.css" rel="stylesheet" type="text/css" >
     </head>
@@ -15,7 +15,7 @@
     </nav>
     <body>
     <form action="{{ url_for('update_post', post_id=post.id) }}" method="post">
-        <p>Posted by: <!--User--></p>
+        <p>Posted by: {{user.name}}</p>
         <p>Date: {{post.date}}</p>
 
         <h2>Question Title:</h2>
@@ -31,7 +31,7 @@
             <input type="submit" value="Save">
         </form>
         <!--Allows User to delete during the editing process.-->
-        <form>
+        <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post">
             <input type="submit" value="Delete">
         </form>
         <!--End of if statement-->

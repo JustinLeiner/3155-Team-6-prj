@@ -38,7 +38,7 @@ def get_post(post_id):
 
     user_post = db.session.query(Note).filter_by(id=post_id).one()
 
-    return render_template('selected_question.html', posts = user_post, user=a_user)
+    return render_template('selected_question.html', post = user_post, user=a_user)
 
 # new post template #
 @app.route('/new_question', methods = ['GET', 'POST'])
@@ -66,14 +66,14 @@ def new_post():
         a_user = db.session.query(User).filter_by(email='jleiner1@uncc.edu').one()
         return render_template('new_question.html', user=a_user)
 
-@app.route('/home/edit/<post_id>', methods=['GET', 'POST'])
+@app.route('/edit/<post_id>', methods=['GET', 'POST'])
 def update_post(post_id):
     #check method used for request
     if request.method == 'POST':
         # get title data
-        title = request.form['questiontitle']
+        title = request.form['title']
         # get post data
-        text = request.form['newquestion']
+        text = request.form['noteText']
         post = db.session.query(Note).filter_by(id=post_id).one()
         # update post data
         post.title = title
@@ -93,7 +93,6 @@ def update_post(post_id):
 
         return render_template('edit_selected_question.html', post=my_post, user=a_user)
 
-@app.route('/home/selected_question/delete/<post_id>', methods=['POST'])
 @app.route('/home/delete/<post_id>', methods=['POST'])
 def delete_post(post_id):
     #retrieve post from database
