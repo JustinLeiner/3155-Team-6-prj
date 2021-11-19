@@ -10,7 +10,8 @@ from flask import Image
 
 @app.route('/notes/attach image/<note_id>', methods = ['Note'])
 def attach_image(note_id):
-my_note = db.session.query(Note).filter_by(id=note_id).one()
-note_id = my_note;
-my_Image = Image.open("your_image_here");
-my_note + my_Image.show();
+    my_note = db.session.query(Note).filter_by(id=note_id).one()
+    note_id = my_note;
+    my_image = Image.open("your_image_here");
+    my_note + my_image.show()
+    return redirect(url_for('index'))
