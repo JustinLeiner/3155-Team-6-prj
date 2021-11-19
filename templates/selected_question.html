@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="description" content="Shark Questions">
+    <title>Shark Question- {{post.title}}</title>
+    <!-- styles -->
+    <link href="styles/home.css" rel="stylesheet" type="text/css" >
+    </head>
+    <header>
+        <h1>New Sharks Forum</h1>
+    </header>
+    <nav>
+        <a href="{{url_for('index')}}">Home</a>
+    </nav>
+    <body>
+        <h2>Question Title: {{post.title}} </h2>
+        <p>Posted by: {{user.name}}</p>
+        <p>Date: {{post.date}}</p>
+        <p class="posttext">{{post.text}}</p>
+        
+        <!--if statement will need to be here to see if the usernames match if they do then the user is allowed to edit the post-->
+        <!--Connect Edit Method/Link, this button will go to the "edit_selected_question.html"-->
+        <form action="{{ url_for('update_post', post_id=post.id) }}">
+            <input type="submit" value="Edit">
+        </form>
+        <!--Delete Method, if statement also applies-->
+        <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post">
+            <input type="submit" value="Delete">
+        </form>
+        <!--End of if statement-->
+
+        <!--Allows ANY user to reply to Question-->
+        <form>
+            <input type="submit" value="Reply">
+        </form>
+
+        <h3>Replies</h3>
+         <!--Loop for placing the notes from the database-->
+         <table class="replies_list">
+            <tr>
+                <th>User</th>
+                <th>Reply</th>
+                <th>Date</th>
+            </tr>
+            <!--Loop for placing the replies from the database-->
+            <tr>
+                <td><!--Username--></td>
+                <td><!--Reply--></td>
+                <td><!--Date--></td>
+
+                <!--If statement here, if the user created the reply, they are allowed to edit it and delete it,-->
+                <td><!--Connect Edit Method/Link-->
+                    <form>
+                        <input type="submit" value="Edit">
+                    </form>
+                </td>
+                <td><!--Connect Delete Method/Link-->
+                    <form>
+                        <input type="submit" value="Delete">
+                    </form>
+                </td>
+            </tr>
+            <!--End of Loop-->
+        </table>
+    </body>
+</html>
