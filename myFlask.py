@@ -43,13 +43,12 @@ def index():
 @app.route('/<post_id>')
 def get_post(post_id):
     if session.get('user_id'):
-        print(post_id)
-        print(session['user_id'])
+        
 
 
         user_post = db.session.query(Note).filter_by(id=post_id).one()
         form = CommentForm()
-        print(user_post)
+       
 
         return render_template('selected_question.html', post=user_post, user=session['user_id'], form=form)
     else:
