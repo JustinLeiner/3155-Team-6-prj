@@ -36,11 +36,11 @@
         </form>
 
         <h3>Replies</h3>
-        {% if note.comments %}
-            {% if note.comments|length > 0 %}
+        {% if post.comments %}
+            {% if post.comments|length > 0 %}
                 <h2>Comments</h2>
                 <ul>
-                {% for comment in note.comments %}
+                {% for comment in post.comments %}
                     <li>{{ comment.content }}</li>
                 {% endfor %}
                 </ul>
