@@ -175,17 +175,17 @@ def logout():
 
 @app.route('/home/<post_id>/comment', methods=['POST'])
 def new_comment(post_id):
-    if session.get('user'):
+    if session.get('user_id'):
         comment_form = CommentForm()
         # validate_on_submit only validates using POST
         if comment_form.validate_on_submit():
             # get comment data
             comment_text = request.form['comment']
-            new_record = Comment(comment_text, int(note_id), session['user_id'])
+            new_record = Comment(comment_text, int(post_id), session['user_id'])
             db.session.add(new_record)
             db.session.commit()
 
-        return redirect(url_for('get_post', post_id=note_id))
+        return redirect(url_for('get_post', post_id=post_id))
 
     else:
         return redirect(url_for('login'))
