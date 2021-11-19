@@ -8,9 +8,9 @@ from models import Note as Note
 from models import User as User
 from flask import Image
 
-@app.route('/notes/attach image/<note_id>', methods = ['Note'])
-def attach_image(note_id):
-    my_note = db.session.query(Note).filter_by(id=note_id).one()
+@app.route('/post/attach image/<post_id>', methods = ['POST'])
+def attach_image(post_id):
+    my_post = db.session.query(get_post).filter_by(id=post_id).one() 
     my_image = Image.open("your_image_here");
-    my_note + my_image.show()
+    my_post + my_image.show()
     return redirect(url_for('index'))
