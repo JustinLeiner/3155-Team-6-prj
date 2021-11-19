@@ -10,6 +10,8 @@ from forms import RegisterForm
 from forms import LoginForm
 from flask import session
 import bcrypt
+from models import Comment as Comment
+from forms import CommentForm
 
 app = Flask(__name__)     # create an app
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_note_app.db'
@@ -46,10 +48,10 @@ def get_post(post_id):
 
 
         user_post = db.session.query(Note).filter_by(id=post_id).one()
-
+        form = CommentForm()
         print(user_post)
 
-        return render_template('selected_question.html', post=user_post, user=session['user_id'])
+        return render_template('selected_question.html', post=user_post, user=session['user_id'], form=form)
     else:
         return redirect(url_for('login'))
 
