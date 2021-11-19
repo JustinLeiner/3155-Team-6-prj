@@ -10,7 +10,9 @@ from flask import Image
 
 @app.route('/post/attach image/<post_id>', methods = ['POST'])
 def attach_image(post_id):
-    my_post = db.session.query(get_post).filter_by(id=post_id).one() 
-    my_image = Image.open("your_image_here");
-    my_post + my_image.show()
-    return redirect(url_for('index'))
+    if session.get('user_id'):
+        my_post = db.session.query(get_post).filter_by(id=post_id).one()
+        my_image = Image.open("your_image_here");
+        my_post + my_image.show()
+
+        return redirect(url_for('index'))
