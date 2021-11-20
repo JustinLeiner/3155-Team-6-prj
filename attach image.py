@@ -8,20 +8,20 @@ from models import Note as Note
 from models import User as User
 from flask import Image
 
-@app.route('/post/attach image/<post_id>', methods = ['POST'])
-def attach_image(post_id):
+@app.route('/post/attach image/<id>/<postImage>', methods = ['POST', [GET]])
+def attach_image(image, post_id):
     if session.get('user_id'):
         if request.method =='POST':
             image = request.form['image']
             post_id = random.randint(10000, 99999)
             post = db.session.query(Note).filter_by(id=post_id).first()
             Post = post_id
-            user = User.query.filter_by(username = username).first()
+            user_id = User.query.filter_by(username = username).first()
             UserName = user.username
-            <input type="file" name="datafile" size="40">
+            <input type = "file" name ="datafile" size "30">
             try:
                 input type ="file" accept="image/*" /
-                thisrecord = Posts(post_id, title, image, post_id, userName)
+                thisrecord = Posts(post_id, title, image, user)id, userName)
                 db.session.add(thisrecord)
                 db.session.commit()
                 return redirect(url_for('image', username =username, post=id))
@@ -29,10 +29,9 @@ def attach_image(post_id):
 
                 posts = db.session.query(Note).all()
                 print(post)
-                print(postsOut)
         else:
-            user_a = User.query.filter_by(username=username).first()
+            user_one = User_id.query.filter_by(username=username).first()
             post = db.session.query(Note).filter_by(id=post_id).first()
-            return render_template('image.html', user = user_a)
+            return render_template('image.html', user_id = user_one, post_id=post)
     else:
         return redirect(url_for('login'))
