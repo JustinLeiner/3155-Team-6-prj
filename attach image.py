@@ -1,13 +1,3 @@
-import os                 # os is used to get environment variables IP & PORT
-from flask import Flask   # Flask is the web app that we will customize
-from flask import render_template
-from flask import request
-from flask import redirect, url_for
-from database import db
-from models import Note as Note
-from models import User as User
-from flask import Image
-
 @app.route('/post/attach image/<id>/<postImage>', methods = ['POST', [GET]])
 def attach_image(image, post_id):
     if session.get('user_id'):
@@ -18,10 +8,10 @@ def attach_image(image, post_id):
             Post = post_id
             user_id = User.query.filter_by(username = username).first()
             UserName = user.username
-           
+            
             try:
-                
-                thisrecord = Posts(post_id, title, image, user)id, userName)
+
+                thisrecord = Posts(post_id, title, image, userid, userName)
                 db.session.add(thisrecord)
                 db.session.commit()
                 return redirect(url_for('image', username =username, post=id))
