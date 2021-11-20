@@ -11,7 +11,7 @@ def attach_image(image, post_id):
             
             try:
 
-                thisrecord = Posts(post_id, title, image, userid, userName)
+                thisrecord = Posts(post_id, user_id,userName, title,text, image,)
                 db.session.add(thisrecord)
                 db.session.commit()
                 return redirect(url_for('image', username =username, post=id))
