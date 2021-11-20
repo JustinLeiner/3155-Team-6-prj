@@ -3,7 +3,7 @@ def attach_image(image, post_id):
     if session.get('user_id'):
         if request.method =='POST':
             image = request.form['image']
-            post_id = random.randint(10000, 99999)
+            post_id = random.randint(100000, 999999)
             post = db.session.query(Note).filter_by(id=post_id).first()
             post = post_id
             user_id = User.query.filter_by(username = username).first()
