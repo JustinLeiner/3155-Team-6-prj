@@ -21,8 +21,8 @@ def attach_image(post_id):
             <input type="file" name="datafile" size="40">
             try:
                 input type ="file" accept="image/*" /
-                thisimage = Posts(post_id, title, image, post_id, userName)
-                db.session.add(thisimage)
+                thisrecord = Posts(post_id, title, image, post_id, userName)
+                db.session.add(thisrecord)
                 db.session.commit()
                 return redirect(url_for('image', username =username, post=id))
             except:
