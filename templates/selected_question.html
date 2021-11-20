@@ -30,10 +30,9 @@
         </form>
         <!--End of if statement-->
 
-        <h2>Replies</h2>
         {% if post.comments %}
             {% if post.comments|length > 0 %}
-                <h2>Comments</h2>
+                <h2>Replies</h2>
                 <ul>
                 {% for comment in post.comments %}
                     <li>{{ comment.content }}</li>
