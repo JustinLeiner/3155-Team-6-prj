@@ -18,9 +18,9 @@ def attach_image(image, post_id):
             Post = post_id
             user_id = User.query.filter_by(username = username).first()
             UserName = user.username
-            <input type = "file" name ="datafile" size "30">
+           
             try:
-                input type ="file" accept="image/*" /
+                
                 thisrecord = Posts(post_id, title, image, user)id, userName)
                 db.session.add(thisrecord)
                 db.session.commit()
