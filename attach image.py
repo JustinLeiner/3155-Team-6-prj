@@ -5,10 +5,10 @@ def attach_image(image, post_id):
             image = request.form['image']
             post_id = random.randint(10000, 99999)
             post = db.session.query(Note).filter_by(id=post_id).first()
-            Post = post_id
+            post = post_id
             user_id = User.query.filter_by(username = username).first()
-            UserName = user.username
-            
+            username = user.username
+
             try:
 
                 thisrecord = Posts(post_id, user_id,userName, title,text, image,)
