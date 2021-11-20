@@ -11,8 +11,28 @@ from flask import Image
 @app.route('/post/attach image/<post_id>', methods = ['POST'])
 def attach_image(post_id):
     if session.get('user_id'):
-        my_post = db.session.query(get_post).filter_by(id=post_id).one()
-        my_image = Image.open("your_image_here");
-        my_post + my_image.show()
+        if request.method =='POST':
+            image = request.form['image']
+            post_id = random.randint(10000, 99999)
+            post = db.session.query(Note).filter_by(id=post_id).first()
+            Post = post_id
+            user = User.query.filter_by(username = username).first()
+            UserName = user.username
+            <input type="file" name="datafile" size="40">
+            try:
+                input type ="file" accept="image/*" /
+                thisimage = Posts(post_id, title, image, post_id, userName)
+                db.session.add(thisimage)
+                db.session.commit()
+                return redirect(url_for('image', username =username, post=id))
+            except:
 
-        return redirect(url_for('index'))
+                posts = db.session.query(Note).all()
+                print(post)
+                print(postsOut)
+        else:
+            user_a = User.query.filter_by(username=username).first()
+            post = db.session.query(Note).filter_by(id=post_id).first()
+            return render_template('image.html', user = user_a)
+    else:
+        return redirect(url_for('login'))
