@@ -12,7 +12,7 @@ def like(post_id, action):
             user.unlike_question(post)
             db.session.commit()
 
-       return render_template('selected_question.html', post=user_post, user=session['user_id'], form=form)
+        return redirect(url_for('view_question', question_id=post_id))
     else:
         return redirect(url_for('login'))
 
