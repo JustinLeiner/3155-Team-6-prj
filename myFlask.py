@@ -27,26 +27,36 @@ with app.app_context():
 
 # Home page #
 @app.route('/')
-@app.route('/home', methods=['GET', 'POST'])
 @app.route('/home/', methods=['GET', 'POST'])
 def index():
-    if session.get('user'):
-        return render_template('home.html', user=session['user'])
+    if session.get('user_id'):
+
+         # retrieve posts( called notes in database) from database
+        posts = db.session.query(Note).all()
+
+        return render_template('home.html', user=session['user_id'], posts = posts)
     else:
         return render_template('home.html')
 
 @app.route('/<post_id>')
 def get_post(post_id):
-    if session.get('user'):
-        user_post = db.session.query(Note).filter_by(id=session['user_id']).all()
-        return render_template('selected_question.html', post=user_post, user=session['user'])
+    if session.get('user_id'):
+        print(post_id)
+        print(session['user_id'])
+
+
+        user_post = db.session.query(Note).filter_by(id=post_id).one()
+
+        print(user_post)
+
+        return render_template('selected_question.html', post=user_post, user=session['user_id'])
     else:
         return redirect(url_for('login'))
 
 # new post template #
 @app.route('/new_question', methods = ['GET', 'POST'])
 def new_post():
-    if session.get('user'):
+    if session.get('user_id'):
         if request.method== 'POST':
 
             title = request.form['questiontitle']
@@ -67,14 +77,14 @@ def new_post():
 
             return redirect(url_for('index'))
         else:
-            return render_template('new_question.html', user=session['user'])
+            return render_template('new_question.html', user=session['user_id'])
     else:
         return redirect(url_for('login'))
 
 
 @app.route('/edit/<post_id>', methods=['GET', 'POST'])
 def update_post(post_id):
-    if session.get('user'):
+    if session.get('user_id'):
         #check method used for request
         if request.method == 'POST':
             # get title data
@@ -95,13 +105,13 @@ def update_post(post_id):
             #retrieve post from database
             my_post = db.session.query(Note).filter_by(id=post_id).one()
 
-            return render_template('edit_selected_question.html', post=my_post, user=session['user'])
+            return render_template('edit_selected_question.html', post=my_post, user=session['user_id'])
     else:
         return redirect(url_for('login'))
 
 @app.route('/home/delete/<post_id>', methods=['POST'])
 def delete_post(post_id):
-    if session.get('user'):
+    if session.get('user_id'):
         #retrieve post from database
         user_post = db.session.query(Note).filter_by(id=post_id).one()
         db.session.delete(user_post)
@@ -157,7 +167,7 @@ def login():
 @app.route('/logout')
 def logout():
     #check if user is logged in
-    if session.get('user'):
+    if session.get('user_id'):
         session.clear()
     return redirect(url_for('index'))
 

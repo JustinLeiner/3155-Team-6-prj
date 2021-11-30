@@ -6,16 +6,14 @@
     <title>Shark Questions</title>
     <!-- styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
-<<<<<<< Updated upstream
-=======
 
 
 <script>
     function search() {
-
+        
         // Variable declaration
         var input, toUpper, table, tr, td, i, search, id;
-
+        
         input = document.getElementById("searchBar");
         toUpper = input.value.toUpperCase();
         table = document.getElementById("myPosts");
@@ -32,8 +30,9 @@
 
         // Iterates throught table and hides all results that do not match search criteria
         for (i = 0; i < tr.length; i++) {
-
-            td = tr[i].getElementsByTagName("td")[id.value]
+            
+            td = tr[i].getElementsByTagName("td")[id.value];
+            
             if (td) {
              search = td.textContent || td.innerText;
 
@@ -48,7 +47,6 @@
 </script>
 
 
->>>>>>> Stashed changes
     </head>
     <header>
         <h1>New Sharks Forum</h1>
@@ -73,9 +71,6 @@
         <input type="submit" value = "New post">
         </form>
         <br>
-<<<<<<< Updated upstream
-        <table class="question_list">
-=======
         <h2> Search posts:</h2>
             <div>
                 <input id="num1" type="radio" value="0" name="number" checked>
@@ -95,7 +90,6 @@
         <br>
 
         <table class="question_list" id="myPosts">
->>>>>>> Stashed changes
             <tr>
                 <th> ID </th>
                 <th>Title</th>
