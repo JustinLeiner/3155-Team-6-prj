@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="description" content="Shark Questions">
+    <title>Shark Question- {{post.title}}</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <header>
+        <h1>New Sharks Forum</h1>
+    </header>
+    <nav>
+        <a href="{{url_for('index')}}">Home</a>
+    </nav>
+    <body>
+        <h2>Question Title: {{post.title}} </h2>
+        <p>Posted by: {{user}}</p>
+        <p>Date: {{post.date}}</p>
+        <p class="posttext">{{post.text}}</p>
+        
+        <!--if statement will need to be here to see if the usernames match if they do then the user is allowed to edit the post-->
+        <!--Connect Edit Method/Link, this button will go to the "edit_selected_question.html"-->
+        <form action="{{ url_for('update_post', post_id=post.id) }}">
+            <input type="submit" value="Edit">
+        </form>
+        <!--Delete Method, if statement also applies-->
+        <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post">
+            <input type="submit" value="Delete">
+        </form>
+        <!--End of if statement-->
+
+        {% if post.comments %}
+            {% if post.comments|length > 0 %}
+                <h2>Replies</h2>
+                <ul>
+                {% for comment in post.comments %}
+                    <li>{{ comment.content }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endif %}
+        <form action="{{ url_for('new_comment', post_id=post.id) }}" method="post">
+            <div class="formwrapper">
+                <h2 class="title">Add a comment</h2>
+                    <div class="form-field">
+                        {{ form.comment.label }} <br/> {{ form.comment }}
+                    </div>
+                {{ form.submit }}
+            </div>
+        </form>
+        <div>
+            <i onclick="myFunction(this)" class="fa fa-thumbs-up"></i>
+            <script>
+                function myFunction(x) {
+                x.classList.toggle("fa-thumbs-down");
+                }
+            </script>
+        </div>
+    </body>
+</html>
