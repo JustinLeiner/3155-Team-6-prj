@@ -10,6 +10,8 @@ from forms import RegisterForm
 from forms import LoginForm
 from flask import session
 import bcrypt
+from models import Comment as Comment
+from forms import CommentForm
 
 app = Flask(__name__)     # create an app
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_note_app.db'
@@ -28,11 +30,17 @@ with app.app_context():
 # Home page #
 @app.route('/')
 @app.route('/home/', methods=['GET', 'POST'])
+
 def index():
     if session.get('user_id'):
 
          # retrieve posts( called notes in database) from database
         posts = db.session.query(Note).all()
+
+        
+        # posts = db.session.query(Note).filter_by(title="I need help").one()
+
+
 
         return render_template('home.html', user=session['user_id'], posts = posts)
     else:
@@ -41,15 +49,12 @@ def index():
 @app.route('/<post_id>')
 def get_post(post_id):
     if session.get('user_id'):
-        print(post_id)
-        print(session['user_id'])
-
-
+        
         user_post = db.session.query(Note).filter_by(id=post_id).one()
+        form = CommentForm()
+       
 
-        print(user_post)
-
-        return render_template('selected_question.html', post=user_post, user=session['user_id'])
+        return render_template('selected_question.html', post=user_post, user=session['user_id'], form=form)
     else:
         return redirect(url_for('login'))
 
@@ -170,5 +175,22 @@ def logout():
     if session.get('user_id'):
         session.clear()
     return redirect(url_for('index'))
+
+@app.route('/home/<post_id>/comment', methods=['POST'])
+def new_comment(post_id):
+    if session.get('user_id'):
+        comment_form = CommentForm()
+        # validate_on_submit only validates using POST
+        if comment_form.validate_on_submit():
+            # get comment data
+            comment_text = request.form['comment']
+            new_record = Comment(comment_text, int(post_id), session['user_id'])
+            db.session.add(new_record)
+            db.session.commit()
+
+        return redirect(url_for('get_post', post_id=post_id))
+
+    else:
+        return redirect(url_for('login'))
 
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
