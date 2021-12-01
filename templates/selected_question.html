@@ -14,21 +14,23 @@
         <a href="{{url_for('index')}}">Home</a>
     </nav>
     <body>
-        <h2>Question Title: {{post.title}} </h2>
-        <p>Posted by: {{user}}</p>
-        <p>Date: {{post.date}}</p>
-        <p class="posttext">{{post.text}}</p>
-        
-        <!--if statement will need to be here to see if the usernames match if they do then the user is allowed to edit the post-->
-        <!--Connect Edit Method/Link, this button will go to the "edit_selected_question.html"-->
-        <form action="{{ url_for('update_post', post_id=post.id) }}">
-            <input type="submit" value="Edit">
-        </form>
-        <!--Delete Method, if statement also applies-->
-        <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post">
-            <input type="submit" value="Delete">
-        </form>
-        <!--End of if statement-->
+        <div class="selected_question">
+            <h2>Question Title: {{post.title}} </h2>
+            <p>Posted by: {{user}}</p>
+            <p>Date: {{post.date}}</p>
+            <p class="posttext">{{post.text}}</p>
+            
+            <!--if statement will need to be here to see if the usernames match if they do then the user is allowed to edit the post-->
+            <!--Connect Edit Method/Link, this button will go to the "edit_selected_question.html"-->
+            <form action="{{ url_for('update_post', post_id=post.id) }}">
+                <input class="button" id="edit_button" type="submit" value="Edit">
+            </form>
+            <!--Delete Method, if statement also applies-->
+            <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post">
+                <input class="button" id="delete_button" type="submit" value="Delete">
+            </form>
+            <!--End of if statement-->
+        </div>
 
         <h2>Replies</h2>
         {% if post.comments %}
@@ -50,5 +52,6 @@
                 {{ form.submit }}
             </div>
         </form>
+        <script src="{{ url_for('static', filename='darkmode.js') }}"></script>
     </body>
 </html>

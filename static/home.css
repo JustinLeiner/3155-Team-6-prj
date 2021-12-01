@@ -1,1 +1,109 @@
+:root {
+  --mainbgcolor: #809BCE;
+  --mainfontcolor: #222;
+  --headingfontcolor: #0067e6;
+  --title-background: #FAFDF6;
+}
+
+[new-theme="darkmode"] {
+  --mainbgcolor: #2D2A32;
+  --mainfontcolor: #efefef;
+  --headingfontcolor: #809BCE;
+  --title-background: #0B2027;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  color: var(--mainfontcolor);
+  background-color: var(--mainbgcolor);
+}
+
+main {
+  background: var(--main-bg);
+  max-width: 65ch;
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+h1 {
+  color: var(--headingfontcolor);
+  background-color: var(--title-background);
+  text-align: center;
+  padding: 20px;
+  border-radius: 25px;
+}
+
+nav {
+    background-color: var(--title-background);
+    border-radius: 25px;
+    padding: 10px;
+    text-align: right;
+}
+
+h2 {
+  color: var(--headingfontcolor);
+}
+
+.button
+{
+    border-radius: 25px;
+    padding: 10px;
+    background-color: #B8E0D2;
+}
+
+#delete_button
+{
+    background-color: #EAC4D5; 
+}
+
+#edit_button
+{
+    background-color: #D6EADF;
+}
+
+/* TOGGLE  */
+.themeswap {
+  display: inline-block;
+  height: 34px;
+  position: relative;
+  width: 60px;
+  align-items: right;
+}
+
+
+.slider {
+  background-color: #ccc;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  background-color: #fff;
+  bottom: 4px;
+  content: "";
+  height: 26px;
+  left: 4px;
+  position: absolute;
+  transition: 0.4s;
+  width: 26px;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #95B8D1;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
 
