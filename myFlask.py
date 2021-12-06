@@ -63,7 +63,8 @@ def new_post():
             title = request.form['questiontitle']
 
             text = request.form['newquestion']
-
+            likes = 0
+            dislikes = 0;
             # Create date stamp
             from datetime import date
             today = date.today()
@@ -71,7 +72,7 @@ def new_post():
             # Date format
             today = today.strftime("%m-%d-%Y")
 
-            new_record = Note(title, text, today, session['user_id'])
+            new_record = Note(title, text, today, session['user_id'], likes, dislikes)
 
             db.session.add(new_record)
             db.session.commit()
@@ -176,22 +177,38 @@ def logout():
         session.clear()
     return redirect(url_for('index'))
 
-@app.route('/like/<post_id>/<action>')
+@app.route('/posts/<post_id>/dislikes', methods['POST'])
 def like(post_id, action):
     if session.get('user'):
         post = db.session.query(Question).filter_by(id=post_id).one()
-        user = db.session.query(User).filter_by(user_id=session['user_id'])
 
-        if action == 'like':
-            user.like_question(post)
-            db.session.commit()
-        if action == 'unlike':
-            user.unlike_question(post)
-            db.session.commit()
+        likes = post.likes
+        likes = likes + 1
+        post.likes = likes
 
-        return redirect(url_for('view_question', question_id=post_id))
+        db.session.add(post)
+        db.session.commit()
+
+        return redirect(url_for('get_post', question_id=post_id))
     else:
         return redirect(url_for('login'))
+
+@app.route('/posts/<post_id>/dislikes', methods['POST'])
+def dislike(post_id, action):
+    if session.get('user'):
+        post = db.session.query(Question).filter_by(id=post_id).one()
+
+        dislikes = post.dislikes
+        dislikes = dislikes + 1
+        post.dislikes = dislikes
+
+        db.session.add(post)
+        db.session.commit()
+
+        return redirect(url_for('get_post', question_id=post_id))
+    else:
+        return redirect(url_for('login'))
+
 
 @app.route('/home/<post_id>/comment', methods=['POST'])
 def new_comment(post_id):
