@@ -6,45 +6,40 @@
     <title>Shark Questions</title>
     <!-- styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+    <script>
+        function search() {
+            // Variable declaration
+            var input, toUpper, table, tr, td, i, search, id;   
+            input = document.getElementById("searchBar");
+            toUpper = input.value.toUpperCase();
+            table = document.getElementById("myPosts");
+            tr = table.getElementsByTagName("tr");
+            var radios = document.getElementsByName('number');
 
+            for (var i = 0, length = radios.length; i < length; i++){
+                if (radios[i].checked){
+                    id = radios[i];
+                    break;
+                }
+            }
 
-<script>
-    function search() {
-        
-        // Variable declaration
-        var input, toUpper, table, tr, td, i, search, id;
-        
-        input = document.getElementById("searchBar");
-        toUpper = input.value.toUpperCase();
-        table = document.getElementById("myPosts");
-        tr = table.getElementsByTagName("tr");
+                // Iterates throught table and hides all results that do not match search criteria
+                for (i = 0; i < tr.length; i++) {
+                    
+                    td = tr[i].getElementsByTagName("td")[id.value];
+                    
+                    if (td) {
+                    search = td.textContent || td.innerText;
 
-        var radios = document.getElementsByName('number');
-
-        for (var i = 0, length = radios.length; i < length; i++){
-            if (radios[i].checked){
-                id = radios[i];
-                break;
+                    if (search.toUpperCase().indexOf(toUpper) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
             }
         }
-
-        // Iterates throught table and hides all results that do not match search criteria
-        for (i = 0; i < tr.length; i++) {
-            
-            td = tr[i].getElementsByTagName("td")[id.value];
-            
-            if (td) {
-             search = td.textContent || td.innerText;
-
-            if (search.toUpperCase().indexOf(toUpper) > -1) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
-            }
-        }
-    }
-}
-</script>
+    </script>
 
 
     </head>
@@ -60,38 +55,35 @@
             <a href="{{url_for('login')}}">Login</a>
     {% endif %}
     </nav>
-    <div class="theme-changer">
-        <label class="themeswap" for="checkbox">
-            <input type="checkbox" id="checkbox" />
-            <div class="slider">
-            </div>
-        </label>
-    </div>
+    <!--DARKMODE-->
+    <form action = "{{url_for('darkmode')}}">
+        <div class="theme-changer">
+            <label>Theme Changer:</label>
+            <label class="themeswap" for="checkbox">
+                 
+                <input type="checkbox" id="checkbox" />
+                <div class="darkmode_swap">
+                </div>
+            </label>
+            <!--<input class="button" type="submit" value = "Save Darkmode Status">-->
+        </div>
+    </form>
+    <!--End of DARKMODE-->
     <body>
-        <div>
         <br>
         <form action = "{{url_for('new_post')}}">
-        <input type="submit" value = "New post">
-        </form>
-        <br>
-        <h2> Search posts:</h2>
-            <div>
-                <input id="num1" type="radio" value="0" name="number" >
-                <label for="num1">ID</label>
-            </div>
-            <div>
-                <input id="num2" type="radio" value="1" name="number" checked>
-                <label for="num2">Title</label>
-            </div>
-            <div>
-                <input id="num3" type="radio" value="2" name="number">
-                <label for="num3">Date</label>
-            </div>
-        <input type="text" id="searchBar" onkeyup="search()" placeholder="Enter a post title">
+        <input class="button" id="new_button" type="submit" value = "New Post">
+        <div class="search_filter">
+            <input id="num1" type="radio" value="0" name="number" >
+            <label for="num1">ID</label>
+            <input id="num2" type="radio" value="1" name="number" checked>
+            <label for="num2">Title</label>
 
-        <br>
-        <br>
-
+            <input id="num3" type="radio" value="2" name="number">
+            <label for="num3">Date</label>
+            <br>
+            <input type="text" id="searchBar" onkeyup="search()" placeholder="Enter a post title">
+        </div>
         <table class="question_list" id="myPosts">
             <tr>
                 <th> ID </th>
@@ -102,24 +94,27 @@
            {% for post in posts %}
             <tr>
                 <!-- based off names used in sql table -->
-                <td>{{post.id}} </td>
+                <td>{{post.user_id}} </td>
                 <td><a href="{{ url_for('get_post', post_id=post.id) }}">{{post.title}}</a></td>
                 <td>{{post.date}} </td>
-           
-                <td><!--Connect Edit Method/Link, when user clicks on edit it will go to the edit_selected_question.html-->
-                 <form action="{{ url_for('update_post', post_id=post.id) }}">
-                        <input type="submit" value="Edit">
-                    </form>
+                
+                {% if post.user_id == user %}
+                <td>             
+                <form action="{{ url_for('update_post', post_id=post.id) }}">
+                    <input class="button" id="edit_button" type="submit" value="Edit">
+                </form>
                 </td>  
                 <td>
                     <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post">
-                        <input type="submit" value="Delete">
+                        <input class="button" id="delete_button" type="submit" value="Delete">
                     </form>
                 </td>
+                {% endif %}      
             </tr>
         {% endfor %} 
         </table>
-        </div>
+        
         <script src="{{ url_for('static', filename='darkmode.js') }}"></script>
+            
     </body>
 </html>

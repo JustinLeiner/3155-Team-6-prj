@@ -14,7 +14,7 @@
         <a href="{{url_for('index')}}">Home</a>
     </nav>
     <body>
-        <form action="{{url_for('new_post')}}" method="post">
+        <form class="new_question" action="{{url_for('new_post')}}" method="post">
             <p><label>Question Title </label></p>
             <p><input type="text" name="questiontitle" placeholder="Enter Question Title Here"/></p> 
             <p><label>Question: </label></p>
@@ -23,8 +23,9 @@
             </p> 
             <!--Will need to be connected to python to actually save the question-->                 
             <p>
-             <input type="submit" value="Post"/>
+             <input class="button" type="submit" value="Post"/>
             </p>
         </form>
+        <script src="{{ url_for('static', filename='darkmode.js') }}"></script>
     </body>
 </html>

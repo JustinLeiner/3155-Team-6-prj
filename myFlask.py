@@ -38,15 +38,16 @@ def index():
 
         return render_template('home.html', user=session['user_id'], posts = posts)
     else:
-        return render_template('home.html')
+        posts = db.session.query(Note).all()
+        return render_template('home.html', posts=posts)
 
 @app.route('/<post_id>')
 def get_post(post_id):
     if session.get('user_id'):
-
+    
         user_post = db.session.query(Note).filter_by(id=post_id).one()
         form = CommentForm()
-        
+
         return render_template('selected_question.html', post=user_post, user=session['user_id'], form=form)
     else:
         return redirect(url_for('login'))
@@ -82,7 +83,7 @@ def new_post():
 
 @app.route('/edit/<post_id>', methods=['GET', 'POST'])
 def update_post(post_id):
-    if session.get('user_id'):
+    if session.get('user_id'): #Darkmode As Well
         #check method used for request
         if request.method == 'POST':
             # get title data
@@ -183,6 +184,34 @@ def new_comment(post_id):
 
         return redirect(url_for('get_post', post_id=post_id))
 
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/darkmode')
+def darkmode():
+    if session.get('user'):
+        checked = 'checkbox' in request.form
+        user = db.session.query(User).filter_by(darkmode=session['user_id']).one()
+        user.darkmode=checked 
+        db.session.add(checked)
+        db.session.commit()
+        return redirect(url_for('index', darkmode=checked))
+#User.darkmode
+
+@app.route('/like/<question_id>/<action>')
+def like(post_id, action):
+    if session.get('user'):
+        post = db.session.query(Question).filter_by(id=post_id).one()
+        user = db.session.query(User).filter_by(user_id=session['user_id'])
+
+        if action == 'like':
+            user.like_question(post)
+            db.session.commit()
+        if action == 'unlike':
+            user.unlike_question(post)
+            db.session.commit()
+
+        return redirect(url_for('view_question', question_id=post_id))
     else:
         return redirect(url_for('login'))
 

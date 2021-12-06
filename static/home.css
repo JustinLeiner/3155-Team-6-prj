@@ -50,9 +50,9 @@ h2 {
 
 .button
 {
-    border-radius: 25px;
-    padding: 10px;
-    background-color: #B8E0D2;
+  border-radius: 25px;
+  padding: 10px;
+  background-color: #B8E0D2;
 }
 
 #delete_button
@@ -68,14 +68,14 @@ h2 {
 /* TOGGLE  */
 .themeswap {
   display: inline-block;
-  height: 34px;
+  height: 20px;
   position: relative;
-  width: 60px;
+  width: 30px;
   align-items: right;
 }
 
 
-.slider {
+.darkmode_swap {
   background-color: #ccc;
   bottom: 0;
   cursor: pointer;
@@ -84,26 +84,112 @@ h2 {
   right: 0;
   top: 0;
   transition: 0.4s;
-  border-radius: 34px;
+  border-radius: 18px;
 }
 
-.slider:before {
+.darkmode_swap:before {
   background-color: #fff;
   bottom: 4px;
   content: "";
-  height: 26px;
+  height: 12px;
   left: 4px;
   position: absolute;
   transition: 0.4s;
-  width: 26px;
+  width: 12px;
   border-radius: 50%;
 }
 
-input:checked + .slider {
+input:checked + .darkmode_swap {
   background-color: #95B8D1;
 }
 
-input:checked + .slider:before {
-  transform: translateX(26px);
+input:checked + .darkmode_swap:before {
+  transform: translateX(12px);
 }
 
+/**End of Slide**/
+.question_list
+{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+a
+{
+  color: var(--headingfontcolor);
+}
+
+a:hover
+{
+  color: var(--mainfontcolor);
+}
+
+tr
+{
+  
+  padding: 20px;
+  border-radius: 25px;
+  border-collapse: collapse;
+  
+}
+
+.question_list td, .question_list th
+{
+  background-color: var(--title-background);
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.selected_question
+{
+  background-color: var(--title-background);
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.posttext
+{
+  font-size: 16px;
+  padding: 8px;
+}
+
+.question_info
+{
+  display: inline;
+}
+
+.search_filter
+{
+  text-align: center;
+}
+
+#new_button
+{
+  position: absolute;
+
+}
+
+.new_question
+{
+  text-align: center;
+}
+
+.login_section
+{
+  text-align: center;
+}
+
+.comment_table td, .comment_table th
+{
+  background-color: var(--title-background);
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.id_center
+{
+  text-align: center;
+}

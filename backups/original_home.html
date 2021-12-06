@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="description" content="Shark Questions">
+    <title>Shark Questions</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+    <!--Search Bar Code-->
+    <script>
+        function search() {
+            
+            // Variable declaration
+            var input, toUpper, table, tr, td, i, search;
+            
+            input = document.getElementById("searchBar");
+            toUpper = input.value.toUpperCase();
+            table = document.getElementById("myPosts");
+            tr = table.getElementsByTagName("tr");
+    
+            // Iterates throught table and hides all results that do not match search criteria
+            for (i = 0; i < tr.length; i++) {
+                
+                td = tr[i].getElementsByTagName("td")[1];
+                
+                if (td) {
+                 search = td.textContent || td.innerText;
+    
+                if (search.toUpperCase().indexOf(toUpper) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    </script>
+    <!--End of Search Bar Code-->  
+    </head>
+    <header>
+        <h1>New Sharks Forum</h1>
+    </header>
+    <nav>
+        <a href="{{url_for('index')}}">Home</a>
+    {% if user %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+    {% else %}
+        <a href="{{url_for('register')}}">Register</a>
+        <a href="{{url_for('login')}}">Login</a>
+    {% endif %}
+    </nav>
+    <div class="theme-changer">
+        <label class="themeswap" for="checkbox">
+            <input type="checkbox" id="checkbox" />
+            <div class="slider">
+            </div>
+        </label>
+    </div>
+    <body>
+        <div>
+        <br>
+        <form action = "{{url_for('new_post')}}">
+        <input class="button" type="submit" value = "NEW POST">
+        </form>
+        <br>
+
+        <!--Search-->
+        <h2> Search posts:</h2>
+        <input type="text" id="searchBar" onkeyup="search()" placeholder="Enter a post title">
+        <table class="question_list">
+            <tr>
+                <th> ID </th>
+                <th>Title</th>
+                <th>Date</th>
+               <!-- <th>User</th> -->
+            </tr>
+           {% for post in posts %}
+            <tr>
+                <!-- based off names used in sql table -->
+                <td>{{post.id}} </td>
+                <td><a href="{{ url_for('get_post', post_id=post.id) }}">{{post.title}}</a></td>
+                <td>{{post.date}} </td>
+           
+                <td><!--Connect Edit Method/Link, when user clicks on edit it will go to the edit_selected_question.html-->
+                 <form action="{{ url_for('update_post', post_id=post.id) }}">
+                        <input class="button" id="edit_button" type="submit" value="Edit">
+                    </form>
+                </td>  
+                <td>
+                    <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post">
+                        <input class="button" id="delete_button" type="submit" value="Delete">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %} 
+        </table>
+        </div>
+        <script src="{{ url_for('static', filename='darkmode.js') }}"></script>
+    </body>
+</html>
