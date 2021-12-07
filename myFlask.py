@@ -177,7 +177,7 @@ def logout():
         session.clear()
     return redirect(url_for('index'))
 
-@app.route('/posts/<post_id>/dislikes', methods['POST'])
+@app.route('/posts/<post_id>/dislikes', methods = ['POST'])
 def like(post_id, action):
     if session.get('user'):
         post = db.session.query(Question).filter_by(id=post_id).one()
@@ -193,7 +193,7 @@ def like(post_id, action):
     else:
         return redirect(url_for('login'))
 
-@app.route('/posts/<post_id>/dislikes', methods['POST'])
+@app.route('/posts/<post_id>/dislikes', methods =['POST'])
 def dislike(post_id, action):
     if session.get('user'):
         post = db.session.query(Question).filter_by(id=post_id).one()
