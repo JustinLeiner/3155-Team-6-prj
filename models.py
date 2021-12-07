@@ -11,7 +11,7 @@ class Note(db.Model):
     likes = db.Column("like", db.Integer)
     dislikes = db.Column("dislike", db.Integer)
 
-    def __init__(self, title, text, date, user_id, liked, dislikes):
+    def __init__(self, title, text, date, user_id, likes, dislikes):
         self.title = title
         self.text = text
         self.date = date
