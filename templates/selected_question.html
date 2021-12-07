@@ -69,27 +69,15 @@
             {% endif %}
         </div>
         {% endif %}
-
-
-
-
         <form action="{{ url_for('new_comment', post_id=post.id) }}" method="post">
             <div class="formwrapper">
-                <h2 class="title">Add a comment</h2>
+                <h2 class="title">Add a Comment</h2>
                     <div class="form-field">
                         {{ form.comment.label }} <br/> {{ form.comment }}
                     </div>
                 {{ form.submit }}
             </div>
         </form>
-        <div>
-            <i onclick="myFunction(this)" class="fa fa-thumbs-up"></i>
-            <script>
-                function myFunction(x) {
-                x.classList.toggle("fa-thumbs-down");
-                }
-            </script>
-        </div>
         <script src="{{ url_for('static', filename='darkmode.js') }}"></script>
     </body>
 </html>
