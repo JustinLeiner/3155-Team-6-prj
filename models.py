@@ -45,6 +45,5 @@ class Comment(db.Model):
         self.content = content
         self.post_id = post_id
         self.user_id = user_id
-        self.likes = likes
-        self.dislikes = dislikes
+        
         
