@@ -189,12 +189,13 @@ def new_comment(post_id):
 
 @app.route('/darkmode')
 def darkmode():
-    if session.get('user'):
+    if session.get('user_id'):
         checked = 'checkbox' in request.form
-        user = db.session.query(User).filter_by(darkmode = session['user']).one()
+        user = db.session.query(User).filter_by(id= session['user_id']).one()
         user.darkmode=checked 
-        db.session.add(checked)
+        db.session.add(user)
         db.session.commit()
-        return redirect(url_for('index', darkmode=checked))
+        return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
