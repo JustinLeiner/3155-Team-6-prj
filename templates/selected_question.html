@@ -48,6 +48,8 @@
                 <td><!--Username--></td>
                 <td><!--Reply--></td>
                 <td><!--Date--></td>
+                <td><!--Likes--></td>
+                <td><!--dislikesLikes--></td>
 
                 <!--If statement here, if the user created the reply, they are allowed to edit it and delete it,-->
                 <td><!--Connect Edit Method/Link-->
@@ -62,6 +64,12 @@
                 </td>
             </tr>
             <!--End of Loop-->
+            <tr>
+                <td>{{post.title}}</td>
+                <td>{{post.text}}</td>
+                <td>{{post.date}}</td>
+                <td>{{post.likes}}</td>
+                <td>{{post.dislikes}}</td>
         </table>
     </body>
 </html>
