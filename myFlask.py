@@ -12,6 +12,10 @@ from flask import session
 import bcrypt
 from models import Comment as Comment
 from forms import CommentForm
+import secrets
+from forms import ImageForm
+from PIL import Image
+
 
 app = Flask(__name__)     # create an app
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_note_app.db'
@@ -49,18 +53,24 @@ def index():
 @app.route('/<post_id>')
 def get_post(post_id):
     if session.get('user_id'):
-        
+
         user_post = db.session.query(Note).filter_by(id=post_id).one()
+        ## Add img
+        form=ImageForm()
+        image_file = url_for('static', filename='static/images/' + Note.image_file)
         form = CommentForm()
        
-
-        return render_template('selected_question.html', post=user_post, user=session['user_id'], form=form)
+        return render_template('selected_question.html', post=user_post, user=session['user_id'], form=form, image_file=image_file)
     else:
         return redirect(url_for('login'))
 
 # new post template #
 @app.route('/new_question', methods = ['GET', 'POST'])
 def new_post():
+
+    #add
+    form=ImageForm()
+
     if session.get('user_id'):
         if request.method== 'POST':
 
@@ -74,14 +84,18 @@ def new_post():
 
             # Date format
             today = today.strftime("%m-%d-%Y")
+                
+            picture = request.files['picture']
+            picture.save(os.path.join(app.root_path, 'static', picture.filename))
 
-            new_record = Note(title, text, today, session['user_id'])
+            new_record = Note(title, text, today, session['user_id'], picture.filename)
 
             db.session.add(new_record)
             db.session.commit()
 
             return redirect(url_for('index'))
         else:
+
             return render_template('new_question.html', user=session['user_id'])
     else:
         return redirect(url_for('login'))
@@ -192,5 +206,6 @@ def new_comment(post_id):
 
     else:
         return redirect(url_for('login'))
+
 
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)

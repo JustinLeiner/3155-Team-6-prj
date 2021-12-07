@@ -8,12 +8,16 @@ class Note(db.Model):
     date = db.Column("date", db.String(50))
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     comments= db.relationship("Comment", backref="note", cascade="all, delete-orphan", lazy=True)
+    
+    ## add
+    image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
 
-    def __init__(self, title, text, date, user_id):
+    def __init__(self, title, text, date, user_id, image_file):
         self.title = title
         self.text = text
         self.date = date
         self.user_id = user_id
+        self.image_file = image_file
 
 class User(db.Model):
     id = db.Column("id", db.Integer, primary_key = True)
