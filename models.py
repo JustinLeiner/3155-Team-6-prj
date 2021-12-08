@@ -9,15 +9,18 @@ class Note(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     comments= db.relationship("Comment", backref="note", cascade="all, delete-orphan", lazy=True)
     likes = db.Column("like", db.Integer)
-    dislikes = db.Column("dislike", db.Integer)
+    dislike = db.Column("dislike", db.Integer)
+    ## add
+    image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
 
-    def __init__(self, title, text, date, user_id, likes, dislikes):
+    def __init__(self, title, text, date, user_id, image_file, likes, dislike):
         self.title = title
         self.text = text
         self.date = date
         self.user_id = user_id
+        self.image_file = image_file
         self.likes = likes
-        self.dislikes = dislikes
+        self.dislike = dislike
 
 class User(db.Model):
     id = db.Column("id", db.Integer, primary_key = True)
@@ -27,11 +30,24 @@ class User(db.Model):
     notes = db.relationship("Note", backref="user", lazy=True)
     comments = db.relationship("Comment", backref="user", lazy=True)
     darkmode = db.Column("darkmode", db.Boolean, nullable=False, default=False)
-
+    
     def __init__(self, email, password):
         self.email = email
         self.password = password
         self.registered_on = datetime.date.today()
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date_posted = db.Column(db.DateTime, nullable=False)
+    content = db.Column(db.VARCHAR, nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey("note.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+
+    def __init__(self, content, post_id, user_id):
+        self.date_posted = datetime.date.today()
+        self.content = content
+        self.post_id = post_id
+        self.user_id = user_id
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
