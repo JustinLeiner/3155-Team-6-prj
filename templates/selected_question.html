@@ -14,43 +14,72 @@
     <nav>
         <a href="{{url_for('index')}}">Home</a>
     </nav>
+    <br>
     <body>
-        <h2>Question Title: {{post.title}} </h2>
-        <p>Posted by: {{user}}</p>
-        <p>Date: {{post.date}}</p>
-        <p class="posttext">{{post.text}}</p>
-        <img src= "{{ url_for('static', filename=post.image_file)}}" width=200 height=250>
-        
-        <!--if statement will need to be here to see if the usernames match if they do then the user is allowed to edit the post-->
-        <!--Connect Edit Method/Link, this button will go to the "edit_selected_question.html"-->
-        <form action="{{ url_for('update_post', post_id=post.id) }}">
-            <input type="submit" value="Edit">
-        </form>
-        <!--Delete Method, if statement also applies-->
-        <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post">
-            <input type="submit" value="Delete">
-        </form>
-        <!--End of if statement-->
-
+        <div class="selected_question">
+            <h2 class="question_info">{{post.title}}</h2>
+            <p class="question_info">|| {{post.date}}</p>
+            <p class="question_info">|| ID: {{user}} </p>
+            <hr>
+            <p class="posttext">{{post.text}}</p>
+            <img src= "{{ url_for('static', filename=post.image_file)}}" width=200 height=250>
+            <hr>
+            
+            {% if post.user_id == user %}
+            <!--if statement will need to be here to see if the usernames match if they do then the user is allowed to edit the post-->
+            <!--Connect Edit Method/Link, this button will go to the "edit_selected_question.html"-->
+            <div class="buttons_inline">
+                <form action="{{ url_for('update_post', post_id=post.id) }}">
+                    <input class="button" id="edit_button" type="submit" value="Edit">
+                </form>
+                <!--Delete Method, if statement also applies-->
+                <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post">
+                    <input class="button" id="delete_button" type="submit" value="Delete">
+                </form>
+                <!--End of if statement-->
+            </div>
+            {% endif %} 
+        </div>
+        <br>
         {% if post.comments %}
+        <div class="selected_question">
             {% if post.comments|length > 0 %}
-                <h2>Replies</h2>
-                <ul>
-                {% for comment in post.comments %}
-                    <li>{{ comment.content }}</li>
-                {% endfor %}
-                </ul>
+                <table class="comment_table">
+                    <tr>
+                        <td class="id_center">User ID</td>
+                        <td class="id_center">Comment</td>
+                    </tr>
+                    {% for comment in post.comments %}
+                    <tr>
+                        <td class="id_center">{{ comment.user_id }}</td>
+                        <td>{{ comment.content }}</td>
+                        {% if comment.user_id == user %}
+                            <td>             
+                            <form action="{{ url_for('update_post', post_id=post.id) }}">
+                                <input class="button" id="edit_button" type="submit" value="Edit">
+                            </form>
+                            </td>  
+                            <td>
+                                <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post">
+                                    <input class="button" id="delete_button" type="submit" value="Delete">
+                                </form>
+                            </td>
+                        {% endif %}  
+                    </tr>
+                    {% endfor %}
+                </table>
             {% endif %}
+        </div>
         {% endif %}
         <form action="{{ url_for('new_comment', post_id=post.id) }}" method="post">
             <div class="formwrapper">
-                <h2 class="title">Add a comment</h2>
+                <h2 class="title">Add a Comment</h2>
                     <div class="form-field">
                         {{ form.comment.label }} <br/> {{ form.comment }}
                     </div>
                 {{ form.submit }}
             </div>
         </form>
-
+        <script src="{{ url_for('static', filename='darkmode.js') }}"></script>
     </body>
 </html>

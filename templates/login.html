@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="description" content="Shark Questions">
     <title>Shark Questions</title>
-    <link href="styles/loginstyle.css" rel="stylesheet" type="text/css" >
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
     </head>
     <body>
         <div class="login_section">
@@ -22,6 +22,7 @@
                     </ul>
                     {% endif %}
                 </div>
+                <br>
                 <div class="form-field">{{ form.password.label }} {{ form.password }}
                     {% if form.password.errors %}
                     <ul class="errors">
@@ -31,8 +32,10 @@
                     </ul>
                     {% endif %}
                 </div>
+                <br>
                 {{ form.submit }}
             </form>
         </div>
+        <script src="{{ url_for('static', filename='darkmode.js') }}"></script>
     </body>
 </html>

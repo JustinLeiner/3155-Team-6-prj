@@ -26,6 +26,7 @@ class User(db.Model):
     registered_on = db.Column(db.DateTime, nullable=False)
     notes = db.relationship("Note", backref="user", lazy=True)
     comments = db.relationship("Comment", backref="user", lazy=True)
+    darkmode = db.Column("darkmode", db.Boolean, nullable=False, default=False)
     
     def __init__(self, email, password):
         self.email = email
