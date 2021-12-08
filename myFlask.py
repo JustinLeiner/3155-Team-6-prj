@@ -1,8 +1,8 @@
-import os  # os is used to get environment variables IP & PORT
-from flask import Flask  # Flask is the web app that we will customize
+import os                 # os is used to get environment variables IP & PORT
+from flask import Flask   # Flask is the web app that we will customize
 from flask import render_template
 from flask import request
-from flask import redirect, url_for
+from flask import redirect, url_for 
 from database import db
 from models import Note as Note
 from models import User as User
@@ -12,17 +12,20 @@ from flask import session
 import bcrypt
 from models import Comment as Comment
 from forms import CommentForm
+import secrets
+from forms import ImageForm
+from PIL import Image
 
-app = Flask(__name__)  # create an app
+
+app = Flask(__name__)     # create an app
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_note_app.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
 app.config['SECRET_KEY'] = 'SE3155'
 #  Bind SQLAlchemy db object to this Flask app
 db.init_app(app)
 # Setup models
 with app.app_context():
-    db.create_all()  # run under the app context
-
+    db.create_all()   # run under the app context
 
 # @app.route is a decorator. It gives the function "index" special powers.
 # In this case it makes it so anyone going to "your-url/" makes this function
@@ -34,51 +37,68 @@ with app.app_context():
 def index():
     if session.get('user_id'):
 
-        # retrieve posts( called notes in database) from database
+         # retrieve posts( called notes in database) from database
         posts = db.session.query(Note).all()
 
-        return render_template('home.html', user=session['user_id'], posts=posts)
+        return render_template('home.html', user=session['user_id'], posts = posts)
     else:
-        return render_template('home.html')
-
+        posts = db.session.query(Note).all()
+        return render_template('home.html', posts=posts)
 
 @app.route('/<post_id>')
 def get_post(post_id):
     if session.get('user_id'):
 
         user_post = db.session.query(Note).filter_by(id=post_id).one()
+        ## Add img
+        form=ImageForm()
+        image_file = url_for('static', filename='static/images/' + Note.image_file)
         form = CommentForm()
-
-        return render_template('selected_question.html', post=user_post, user=session['user_id'], form=form)
+       
+        return render_template('selected_question.html', post=user_post, user=session['user_id'], form=form, image_file=image_file)
     else:
         return redirect(url_for('login'))
 
-
 # new post template #
-@app.route('/new_question', methods=['GET', 'POST'])
+@app.route('/new_question', methods = ['GET', 'POST'])
 def new_post():
+
+    #add
+    form=ImageForm()
+
     if session.get('user_id'):
-        if request.method == 'POST':
+        if request.method== 'POST':
 
             title = request.form['questiontitle']
 
             text = request.form['newquestion']
+
             likes = 0
-            dislikes = 0;
-            # Create date stamp
+            dislike = 0
+             # Create date stamp
             from datetime import date
             today = date.today()
 
             # Date format
             today = today.strftime("%m-%d-%Y")
+            
+            if form.picture.data:
+                picture = request.files['picture']
+                picture.save(os.path.join(app.root_path, 'static', picture.filename))
 
-            new_record = Note(title, text, today, session['user_id'], likes, dislikes)
+                new_record = Note(title, text, today, session['user_id'], picture.filename, likes, dislike)
 
-            db.session.add(new_record)
-            db.session.commit()
+                db.session.add(new_record)
+                db.session.commit()
+            else:
+                new_record = Note(title, text, today, session['user_id'], 'default.png', likes, dislike)
+
+                db.session.add(new_record)
+                db.session.commit()
 
             return redirect(url_for('index'))
         else:
+
             return render_template('new_question.html', user=session['user_id'])
     else:
         return redirect(url_for('login'))
@@ -87,7 +107,7 @@ def new_post():
 @app.route('/edit/<post_id>', methods=['GET', 'POST'])
 def update_post(post_id):
     if session.get('user_id'):
-        # check method used for request
+        #check method used for request
         if request.method == 'POST':
             # get title data
             title = request.form['title']
@@ -103,19 +123,18 @@ def update_post(post_id):
 
             return redirect(url_for('index'))
         else:
-            # GET request - show new post form to edit post
-            # retrieve post from database
+            #GET request - show new post form to edit post
+            #retrieve post from database
             my_post = db.session.query(Note).filter_by(id=post_id).one()
 
             return render_template('edit_selected_question.html', post=my_post, user=session['user_id'])
     else:
         return redirect(url_for('login'))
 
-
 @app.route('/home/delete/<post_id>', methods=['POST'])
 def delete_post(post_id):
     if session.get('user_id'):
-        # retrieve post from database
+        #retrieve post from database
         user_post = db.session.query(Note).filter_by(id=post_id).one()
         db.session.delete(user_post)
         db.session.commit()
@@ -123,7 +142,6 @@ def delete_post(post_id):
         return redirect(url_for('index'))
     else:
         return redirect(url_for('login'))
-
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
@@ -145,7 +163,6 @@ def register():
 
     # something went wrong - display register view
     return render_template('register.html', form=form)
-
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -169,46 +186,12 @@ def login():
         # form did not validate or GET request
         return render_template("login.html", form=login_form)
 
-
 @app.route('/logout')
 def logout():
-    # check if user is logged in
+    #check if user is logged in
     if session.get('user_id'):
         session.clear()
     return redirect(url_for('index'))
-
-@app.route('/posts/<post_id>/dislikes', methods = ['POST'])
-def like(post_id, action):
-    if session.get('user'):
-        post = db.session.query(Question).filter_by(id=post_id).one()
-
-        likes = post.likes
-        likes = likes + 1
-        post.likes = likes
-
-        db.session.add(post)
-        db.session.commit()
-
-        return redirect(url_for('get_post', question_id=post_id))
-    else:
-        return redirect(url_for('login'))
-
-@app.route('/posts/<post_id>/dislikes', methods =['POST'])
-def dislike(post_id, action):
-    if session.get('user'):
-        post = db.session.query(Question).filter_by(id=post_id).one()
-
-        dislikes = post.dislikes
-        dislikes = dislikes + 1
-        post.dislikes = dislikes
-
-        db.session.add(post)
-        db.session.commit()
-
-        return redirect(url_for('get_post', question_id=post_id))
-    else:
-        return redirect(url_for('login'))
-
 
 @app.route('/home/<post_id>/comment', methods=['POST'])
 def new_comment(post_id):
@@ -227,5 +210,42 @@ def new_comment(post_id):
     else:
         return redirect(url_for('login'))
 
+@app.route('/posts/<post_id>/likes', methods=['POST'])
+def likes(post_id):
+    if request.method == 'POST':
+        # add +1 to current upvote
+        post = db.session.query(Note).filter_by(id=post_id).one()
+        post.likes = post.likes + 1
+        db.session.add(post)
+        db.session.commit()
 
-app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 5000)), debug=True)
+        return redirect(url_for('get_post', post_id=post_id))
+    else:
+        return redirect(url_for('login'))
+
+
+@app.route('/posts/<post_id>/dislike', methods=['POST'])
+def dislike(post_id):
+    if request.method == 'POST':
+        # add +1 to current upvote
+        post = db.session.query(Note).filter_by(id=post_id).one()
+        post.dislike = post.dislike + 1
+        db.session.add(post)
+        db.session.commit()
+
+        return redirect(url_for('get_post', post_id=post_id))
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/darkmode')
+def darkmode():
+    if session.get('user_id'):
+        checked = 'checkbox' in request.form
+        user = db.session.query(User).filter_by(id= session['user_id']).one()
+        user.darkmode=checked 
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('index'))
+    return redirect(url_for('login'))
+
+app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
