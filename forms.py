@@ -4,6 +4,7 @@ from wtforms.validators import Length, Regexp, DataRequired, EqualTo, Email
 from wtforms import ValidationError
 from models import User
 from database import db
+from flask_wtf.file import FileField, FileAllowed
 
 
 class RegisterForm(FlaskForm):
@@ -53,3 +54,10 @@ class CommentForm(FlaskForm):
     comment = TextAreaField('Comment',validators=[Length(min=1)])
 
     submit = SubmitField('Add Comment')
+
+##add
+class ImageForm(FlaskForm):
+    class Meta:
+        csrf = False
+    
+    picture = FileField('Upload image', validators=[FileAllowed(['jpg', 'png'])])

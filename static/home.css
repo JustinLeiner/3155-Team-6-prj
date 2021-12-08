@@ -1,10 +1,10 @@
 :root {
-  --mainbgcolor: #809BCE;
-  --mainfontcolor: #222;
-  --headingfontcolor: #0067e6;
-  --headerbackground: #FAFDF6;
-}
-
+    --mainbgcolor: #809BCE;
+    --mainfontcolor: #222;
+    --headingfontcolor: #0067e6;
+    --headerbackground: #FAFDF6;
+  }
+  
 [new-theme="darkmode"] {
   --mainbgcolor: #2D2A32;
   --mainfontcolor: #efefef;
@@ -56,6 +56,11 @@ h2 {
   background-color: #B8E0D2;
 }
 
+#darkmode_status
+{
+  background-color: #FFC9B5;
+}
+
 #delete_button
 {
     background-color: #EAC4D5; 
@@ -63,7 +68,7 @@ h2 {
 
 #edit_button
 {
-    background-color: #D6EADF;
+    background-color: #e4ff81;
 }
 
 /* TOGGLE  */
@@ -142,6 +147,7 @@ tr
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 8px;
+  text-align: center;
 }
 
 .selected_question
@@ -203,4 +209,14 @@ tr
   background-color: var(--headerbackground);
   border-radius: 25px;
   padding: 10px;
+}
+
+.new_button
+{
+  text-align: left;
+}
+
+.theme-changer
+{
+  text-align: right;
 }

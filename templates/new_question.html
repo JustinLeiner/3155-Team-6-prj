@@ -14,13 +14,19 @@
         <a href="{{url_for('index')}}">Home</a>
     </nav>
     <body>
-        <form class="new_question" action="{{url_for('new_post')}}" method="post">
+        <form class="new_question" action="{{url_for('new_post')}}" method="post" enctype="multipart/form-data">
             <p><label>Question Title </label></p>
             <p><input type="text" name="questiontitle" placeholder="Enter Question Title Here"/></p> 
             <p><label>Question: </label></p>
             <p>
                 <textarea name="newquestion"  rows="6" cols="0" placeholder="Enter Question Here"></textarea>
             </p> 
+
+            <!-- new -->
+            <p>
+                <input type="file" placeholder="Upload Image" name="picture">
+            </p>
+
             <!--Will need to be connected to python to actually save the question-->                 
             <p>
              <input class="button" type="submit" value="Post"/>

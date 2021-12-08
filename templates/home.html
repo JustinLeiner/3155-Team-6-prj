@@ -55,24 +55,24 @@
             <a href="{{url_for('login')}}">Login</a>
     {% endif %}
     </nav>
-    <!--DARKMODE-->
-    <form action = "{{url_for('darkmode')}}">
-        <div class="theme-changer">
-            <label>Theme Changer:</label>
-            <label class="themeswap" for="checkbox">
-                 
-                <input type="checkbox" id="checkbox" />
-                <div class="darkmode_swap">
-                </div>
-            </label>
-            <input class="button" type="submit" value = "Save Darkmode Status">
-        </div>
-    </form>
-    <!--End of DARKMODE-->
     <body>
         <br>
-        <form action = "{{url_for('new_post')}}">
-        <input class="button" id="new_button" type="submit" value = "New Post">
+        <form class="new_button" action = "{{url_for('new_post')}}">
+            <input class="button" id="new_button" type="submit" value = "New Post">
+        </form>
+        <!--DARKMODE-->
+        <form action = "{{url_for('darkmode')}}">
+            <div class="theme-changer">
+                <label>Theme Changer:</label>
+                <label class="themeswap" for="checkbox">
+                    <input type="checkbox" id="checkbox" />
+                    <div class="darkmode_swap">
+                    </div>
+                </label>
+                <input class="button" id="darkmode_status" type="submit" value = "Save Darkmode Status">
+            </div>
+        </form>
+        <!--End of DARKMODE-->
         <div class="search_filter">
             <input id="num1" type="radio" value="0" name="number" >
             <label for="num1">ID</label>

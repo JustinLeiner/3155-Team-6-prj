@@ -22,7 +22,9 @@
             <p class="question_info">|| ID: {{user}} </p>
             <hr>
             <p class="posttext">{{post.text}}</p>
+            <img src= "{{ url_for('static', filename=post.image_file)}}" width=200 height=100>
             <hr>
+            
             {% if post.user_id == user %}
             <!--if statement will need to be here to see if the usernames match if they do then the user is allowed to edit the post-->
             <!--Connect Edit Method/Link, this button will go to the "edit_selected_question.html"-->
