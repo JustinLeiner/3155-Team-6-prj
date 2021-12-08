@@ -84,14 +84,20 @@ def new_post():
 
             # Date format
             today = today.strftime("%m-%d-%Y")
-                
-            picture = request.files['picture']
-            picture.save(os.path.join(app.root_path, 'static', picture.filename))
+            
+            if form.picture.data:
+                picture = request.files['picture']
+                picture.save(os.path.join(app.root_path, 'static', picture.filename))
 
-            new_record = Note(title, text, today, session['user_id'], picture.filename)
+                new_record = Note(title, text, today, session['user_id'], picture.filename)
 
-            db.session.add(new_record)
-            db.session.commit()
+                db.session.add(new_record)
+                db.session.commit()
+            else:
+                new_record = Note(title, text, today, session['user_id'], 'default.jpg')
+
+                db.session.add(new_record)
+                db.session.commit()
 
             return redirect(url_for('index'))
         else:
