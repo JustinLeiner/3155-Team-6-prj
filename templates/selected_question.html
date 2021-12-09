@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
     <meta charset="utf-8">
@@ -22,7 +22,9 @@
             <p class="question_info">|| ID: {{user}} </p>
             <hr>
             <p class="posttext">{{post.text}}</p>
+            <img src= "{{ url_for('static', filename=post.image_file)}}" width=200 height=100>
             <hr>
+            
             {% if post.user_id == user %}
             <!--if statement will need to be here to see if the usernames match if they do then the user is allowed to edit the post-->
             <!--Connect Edit Method/Link, this button will go to the "edit_selected_question.html"-->
@@ -36,7 +38,7 @@
                 </form>
                 <!--End of if statement-->
             </div>
-            {% endif %}
+            {% endif %} 
         </div>
         <br>
         {% if post.comments %}
@@ -52,44 +54,46 @@
                         <td class="id_center">{{ comment.user_id }}</td>
                         <td>{{ comment.content }}</td>
                         {% if comment.user_id == user %}
-                            <td>
+                            <td>             
                             <form action="{{ url_for('update_post', post_id=post.id) }}">
                                 <input class="button" id="edit_button" type="submit" value="Edit">
                             </form>
-                            </td>
+                            </td>  
                             <td>
                                 <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post">
                                     <input class="button" id="delete_button" type="submit" value="Delete">
                                 </form>
                             </td>
-                        {% endif %}
+                        {% endif %}  
                     </tr>
                     {% endfor %}
                 </table>
             {% endif %}
         </div>
         {% endif %}
-
-
-
-
         <form action="{{ url_for('new_comment', post_id=post.id) }}" method="post">
             <div class="formwrapper">
-                <h2 class="title">Add a comment</h2>
+                <h2 class="title">Add a Comment</h2>
                     <div class="form-field">
                         {{ form.comment.label }} <br/> {{ form.comment }}
                     </div>
                 {{ form.submit }}
             </div>
         </form>
-        <div>
-            <i onclick="myFunction(this)" class="fa fa-thumbs-up"></i>
-            <script>
-                function myFunction(x) {
-                x.classList.toggle("fa-thumbs-down");
-                }
-            </script>
-        </div>
+       <!-- <a href="{{ url_for('likes',post_id =post.id) }}" class="New Class">
+        <img src="{{url_for('static', filename='thumbsup.png')}}" class="thumbsbutton">
+        </a>
+        <a href="{{ url_for('dislike',post_id =post.id) }}" class="New Class">
+        <img src="{{url_for('static', filename='thumbsdown.png')}}" class="thumbsbutton">
+        </a>-->
+                                <form action="{{ url_for('likes', post_id=post.id) }}" method ="post">
+                                    <input class="thumbsup" id="like_button" type="submit" value="like">
+                                    {{post.likes}}
+                                </form>
+                                <form action="{{ url_for('dislike', post_id=post.id) }}" method="post">
+                                    <input class="thumbsdown" id= "dislike_button" type="submit" value="dislike">
+                                {{post.dislike}}
+                                </form>
         <script src="{{ url_for('static', filename='darkmode.js') }}"></script>
     </body>
 </html>
